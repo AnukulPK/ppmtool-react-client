@@ -68,3 +68,9 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.form-display {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
