@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { createProject } from "../../redux/features/project/projectSlice";
+import { useNavigate } from "react-router-dom";
 
 const AddProject = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +14,13 @@ const AddProject = () => {
 
   const { projectName, projectIdentifier, description, start_date, end_date } =
     formData;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { projects, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.projects
+  );
 
   const onChange = (e) => {
     setFormData({
@@ -29,7 +39,13 @@ const AddProject = () => {
       end_date: end_date,
     };
     console.log("formData", newProject);
+    dispatch(createProject(newProject));
+    navigate("/dashboard");
   };
+
+  if (isLoading) {
+    return <h2>Loading....</h2>;
+  }
 
   return (
     <div className="project">
