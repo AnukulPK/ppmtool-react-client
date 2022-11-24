@@ -11,6 +11,7 @@ const AddProject = () => {
     start_date: "",
     end_date: "",
   });
+  const [errors, setErrors] = useState({});
 
   const { projectName, projectIdentifier, description, start_date, end_date } =
     formData;
@@ -18,7 +19,7 @@ const AddProject = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { projects, isLoading, isError, isSuccess, message } = useSelector(
+  const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.projects
   );
 
@@ -38,9 +39,17 @@ const AddProject = () => {
       start_date: start_date,
       end_date: end_date,
     };
-    console.log("formData", newProject);
+    // console.log("formData", newProject);
     dispatch(createProject(newProject));
-    navigate("/dashboard");
+    if (isSuccess) {
+      navigate("/dashboard");
+    } else {
+      setErrors({
+        description: message?.description,
+        projectIdentifier: message?.projectIdentifier,
+        projectName: message?.projectName,
+      });
+    }
   };
 
   if (isLoading) {
@@ -64,6 +73,7 @@ const AddProject = () => {
                   onChange={(e) => onChange(e)}
                   value={projectName}
                 />
+                {errors.projectName && <p>{errors.projectName}</p>}
               </div>
               <div className="form-group">
                 <input
