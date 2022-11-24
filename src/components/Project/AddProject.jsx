@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createProject } from "../../redux/features/project/projectSlice";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,16 @@ const AddProject = () => {
     (state) => state.projects
   );
 
+  useEffect(() => {
+    if (isError) {
+      setErrors({
+        description: message?.description,
+        projectIdentifier: message?.projectIdentifier,
+        projectName: message?.projectName,
+      });
+    }
+  }, [isError, message]);
+
   const onChange = (e) => {
     setFormData({
       ...formData,
@@ -43,12 +53,6 @@ const AddProject = () => {
     dispatch(createProject(newProject));
     if (isSuccess) {
       navigate("/dashboard");
-    } else {
-      setErrors({
-        description: message?.description,
-        projectIdentifier: message?.projectIdentifier,
-        projectName: message?.projectName,
-      });
     }
   };
 
@@ -85,6 +89,7 @@ const AddProject = () => {
                   value={projectIdentifier}
                 />
               </div>
+              {errors.projectIdentifier && <p>{errors.projectIdentifier}</p>}
 
               <div className="form-group">
                 <textarea
@@ -94,6 +99,7 @@ const AddProject = () => {
                   onChange={(e) => onChange(e)}
                   value={description}
                 ></textarea>
+                {errors.description && <p>{errors.description}</p>}
               </div>
               <h6>Start Date</h6>
               <div className="form-group">
