@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createProject } from "../../redux/features/project/projectSlice";
+import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 
 const AddProject = () => {
@@ -17,9 +18,9 @@ const AddProject = () => {
     formData;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useNavigate();
 
-  const { isLoading, isError, isSuccess, message } = useSelector(
+  const { isLoading, isError, message } = useSelector(
     (state) => state.projects
   );
 
@@ -50,10 +51,7 @@ const AddProject = () => {
       end_date: end_date,
     };
     // console.log("formData", newProject);
-    dispatch(createProject(newProject));
-    if (isSuccess) {
-      navigate("/dashboard");
-    }
+    dispatch(createProject(newProject, history));
   };
 
   if (isLoading) {
@@ -71,35 +69,49 @@ const AddProject = () => {
               <div className="form-group">
                 <input
                   type="text"
-                  className="form-control form-control-lg "
+                  className={classNames("form-control form-control-lg", {
+                    "is-invalid": errors.projectName,
+                  })}
                   placeholder="Project Name"
                   name="projectName"
                   onChange={(e) => onChange(e)}
                   value={projectName}
                 />
-                {errors.projectName && <p>{errors.projectName}</p>}
+                {errors.projectName && (
+                  <div className="invalid-feedback">{errors.projectName}</div>
+                )}
               </div>
               <div className="form-group">
                 <input
                   type="text"
-                  className="form-control form-control-lg"
+                  className={classNames("form-control form-control-lg", {
+                    "is-invalid": errors.projectIdentifier,
+                  })}
                   placeholder="Unique Project ID"
                   name="projectIdentifier"
                   onChange={(e) => onChange(e)}
                   value={projectIdentifier}
                 />
               </div>
-              {errors.projectIdentifier && <p>{errors.projectIdentifier}</p>}
+              {errors.projectIdentifier && (
+                <div className="invalid-feedback">
+                  {errors.projectIdentifier}
+                </div>
+              )}
 
               <div className="form-group">
                 <textarea
-                  className="form-control form-control-lg"
+                  className={classNames("form-control form-control-lg", {
+                    "is-invalid": errors.description,
+                  })}
                   placeholder="Project Description"
                   name="description"
                   onChange={(e) => onChange(e)}
                   value={description}
                 ></textarea>
-                {errors.description && <p>{errors.description}</p>}
+                {errors.description && (
+                  <div className="invalid-feedback">{errors.description}</div>
+                )}
               </div>
               <h6>Start Date</h6>
               <div className="form-group">
