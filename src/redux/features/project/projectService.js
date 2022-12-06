@@ -5,6 +5,11 @@ const createProject = async (project, history) => {
   history("/dashboard");
 };
 
-const projectService = { createProject };
+const getProjects = async () => {
+  const response = await axios.get("http://localhost:8080/api/project/all");
+  return response.data;
+};
+
+const projectService = { createProject, getProjects };
 
 export default projectService;

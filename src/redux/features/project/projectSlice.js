@@ -3,6 +3,7 @@ import projectService from "./projectService";
 
 const initialState = {
   projects: [],
+  project: {},
   isLoading: false,
   isError: false,
   isSuccess: false,
@@ -14,6 +15,18 @@ export const createProject = createAsyncThunk(
   async (project, thunkAPI) => {
     try {
       return await projectService.createProject(project);
+    } catch (error) {
+      const message = error.response.data;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getProjects = createAsyncThunk(
+  "projects/getProjects",
+  async (thunkAPI) => {
+    try {
+      return await projectService.getProjects();
     } catch (error) {
       const message = error.response.data;
       return thunkAPI.rejectWithValue(message);
@@ -45,6 +58,22 @@ export const projectSlice = createSlice({
         state.message = {};
       })
       .addCase(createProject.rejected, (state, action) => {
+        state.projects = [];
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload;
+      })
+      .addCase(getProjects.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getProjects.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.projects = [...action.payload];
+        state.isError = false;
+        state.isSuccess = true;
+      })
+      .addCase(getProjects.rejected, (state, action) => {
         state.projects = [];
         state.isLoading = false;
         state.isError = true;
