@@ -24,7 +24,7 @@ export const createProject = createAsyncThunk(
 
 export const getProjects = createAsyncThunk(
   "projects/getProjects",
-  async (thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       return await projectService.getProjects();
     } catch (error) {
@@ -69,7 +69,7 @@ export const projectSlice = createSlice({
       })
       .addCase(getProjects.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.projects = [...action.payload];
+        state.projects = action.payload;
         state.isError = false;
         state.isSuccess = true;
       })
