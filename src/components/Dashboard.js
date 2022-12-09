@@ -1,15 +1,14 @@
 import CreateProjectButton from "./Project/CreateProjectButton";
 import ProjectItem from "./Project/ProjectItem";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProjects, reset } from "../redux/features/project/projectSlice";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const { isLoading, isError, isSuccess, message, projects } = useSelector(
+  const { isError, isSuccess, projects } = useSelector(
     (state) => state.projects
   );
-  const [projectData, setProjectData] = useState([]);
 
   useEffect(() => {
     return () => {
@@ -21,8 +20,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getProjects());
-    if (projects) setProjectData(projects);
   }, [dispatch, projects]);
+
+  if (isError) {
+    return <h3>Something went wrong!</h3>;
+  }
 
   return (
     <div className="projects">
@@ -34,7 +36,7 @@ const Dashboard = () => {
             <CreateProjectButton />
             <br />
             <hr />
-            {projectData?.map((projectValue) => (
+            {projects?.map((projectValue) => (
               <ProjectItem
                 key={projectValue.projectIdentifier}
                 project={projectValue}

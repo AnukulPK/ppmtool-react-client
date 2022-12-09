@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AddProject from "./components/Project/AddProject";
 import { Provider } from "react-redux";
 import { store } from "./redux/Store";
+import UpdateProject from "./components/Project/UpdateProject";
 
 function App() {
   return (
@@ -17,6 +18,10 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/addProject" element={<AddProject />} />
+            <Route
+              path="/updateProject/:projectId"
+              element={<UpdateProject />}
+            />
           </Routes>
         </div>
       </Router>
