@@ -10,6 +10,13 @@ const getProjects = async () => {
   return response.data;
 };
 
-const projectService = { createProject, getProjects };
+const getProject = async (projectId) => {
+  const response = await axios.get(
+    `http://localhost:8080/api/project/${projectId}`
+  );
+  return response.data;
+};
+
+const projectService = { createProject, getProjects, getProject };
 
 export default projectService;
