@@ -20,7 +20,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getProjects());
-  }, [dispatch, projects]);
+  }, [dispatch]);
 
   if (isError) {
     return <h3>Something went wrong!</h3>;
