@@ -16,11 +16,11 @@ const Dashboard = () => {
         dispatch(reset());
       }
     };
-  }, [dispatch, projects, isSuccess]);
+  }, [dispatch, isSuccess]);
 
   useEffect(() => {
     dispatch(getProjects());
-  }, [dispatch]);
+  }, [dispatch, projects]);
 
   if (isError) {
     return <h3>Something went wrong!</h3>;
