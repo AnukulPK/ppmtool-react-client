@@ -17,6 +17,16 @@ const getProject = async (projectId) => {
   return response.data;
 };
 
-const projectService = { createProject, getProjects, getProject };
+const deleteProject = async (projectId) => {
+  await axios.delete(`http://localhost:8080/api/project/${projectId}`);
+  return projectId;
+};
+
+const projectService = {
+  createProject,
+  getProjects,
+  getProject,
+  deleteProject,
+};
 
 export default projectService;

@@ -16,7 +16,7 @@ const Dashboard = () => {
         dispatch(reset());
       }
     };
-  }, [dispatch, isSuccess]);
+  }, [dispatch, projects, isSuccess]);
 
   useEffect(() => {
     dispatch(getProjects());

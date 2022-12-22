@@ -1,7 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { deleteProject } from "../../redux/features/project/projectSlice";
+import { useDispatch } from "react-redux";
 
 const ProjectItem = ({ project }) => {
+  const dispatch = useDispatch();
+
+  const onDeleteClickHandler = (id) => {
+    dispatch(deleteProject(id));
+  };
+
   return (
     <div className="container">
       <div className="card card-body bg-light mb-3">
@@ -25,11 +33,13 @@ const ProjectItem = ({ project }) => {
                   <i className="fa fa-edit pr-1"> Update Project Info</i>
                 </li>
               </Link>
-              <Link to="/">
-                <li className="list-group-item delete">
-                  <i className="fa fa-minus-circle pr-1"> Delete Project</i>
-                </li>
-              </Link>
+
+              <li
+                className="list-group-item delete"
+                onClick={() => onDeleteClickHandler(project.projectIdentifier)}
+              >
+                <i className="fa fa-minus-circle pr-1"> Delete Project</i>
+              </li>
             </ul>
           </div>
         </div>
