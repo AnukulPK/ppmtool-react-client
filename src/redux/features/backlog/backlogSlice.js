@@ -10,6 +10,18 @@ const initialState = {
   message: {},
 };
 
+export const addProjectTask = createAsyncThunk(
+  "backlogs/addProjectTask",
+  async (backlog_id, project_task, thunkAPI) => {
+    try {
+      return await backlogService.addProjectTask(backlog_id, project_task);
+    } catch (error) {
+      const message = error.response.data;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const getBacklog = createAsyncThunk(
   "backlogs/getBacklog",
   async () => {}
@@ -38,6 +50,22 @@ export const backlogSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(addProjectTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addProjectTask.fulfilled, (state, action) => {
+        state.project_tasks = [...state.project_tasks, action.payload];
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+      })
+      .addCase(addProjectTask.rejected, (state, action) => {
+        state.project_tasks = [];
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload;
+      })
       .addCase(getBacklog.pending, (state) => {
         state.isLoading = true;
       })
